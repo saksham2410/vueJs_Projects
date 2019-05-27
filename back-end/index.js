@@ -42,64 +42,6 @@ app.get("/", (req, res) => {
   res.send("Hello World");
 });
 
-let meow = "";
-let meoww ='';
-
-/**
- * this mehtod returns all the records of a given table
- * @param {string} tableName
- */
-
-const getAllTableData = tableName => async (req, res) => {
-  const tableData = await query(`select * from ${tableName}`);
-  res.json(tableData);
-};
-
-
-const getDate = () => async (req, res) => {
-  meow = req.body.todo;
-  meoww = req.body.todo1;
-  console.log("fetchDate", meow);
-  console.log("fetchcity", meoww);
-  // const insertedTableRow2 = await query(
-  //   `insert into Kitchen_menu values (NULL,NULL,NULL,NULL,NULL,NULL,NULL)`
-  // );
-  // res.json(insertedTableRow2);
-  // console.log('MNeow', meow);
-  // return meow
-  // res.json(meow);
-};  
-
-
-const getSomeTableDataBreakfast = tableName => async (req, res) => {
-  // console.log('Shivam');
-  // var sohail = getDate().meow;
-  // // if(sohail)
-  // console.log("Breakfast", sohail);
-  console.log('Breakfast-Date', meow);
-  const tableData1 = await query(
-    `select * from ${tableName} where meal_type = "breakfast" and daily_date='${meow}' and userhotel='${meoww}'`
-  );
-  res.json(tableData1);
-};
-
-const getSomeTableDataLunch = tableName => async (req, res) => {
-  console.log("Lunch-Date", meow);
-  const tableData8 = await query(
-    `select * from ${tableName} where meal_type = "lunch" and daily_date='${meow}'and userhotel='${meoww}'`
-  );
-  console.log(tableData8);
-  res.json(tableData8);
-};
-
-const getSomeTableDataDinner = tableName => async (req, res) => {
-  console.log("Dinner-Date", meow);
-  const tableData9 = await query(
-    `select * from ${tableName} where meal_type = "dinner" and daily_date='${meow}'and userhotel='${meoww}'`
-  );
-  res.json(tableData9);
-};
-
 const getUserData = tableName => async (req, res) => {
   const userData = await query(
     `select DISTINCT CITY, LOCALNAME from ${tableName} where TYPE = "Kitchen"`
@@ -117,52 +59,6 @@ const getUserDataCity = tableName => async (req, res) => {
 };
 
 
-// console.log('Try',meow);
-
-const getDistinctDates = tableName => async (req, res) => {
-  const tableData3 = await query(`select DISTINCT daily_date from ${tableName}`);
-  // tableData1.forEach(element => {
-  //   console.log(element);
-  //   const tableData2 =  query(`select * from ${tableName} WHERE daily_date = ${element}`);
-  // });
-  // console.log(tableData3);
-  res.json(tableData3);
-};
-
-// const getDate = () => async(req,res) => {
-//   console.log(req.body.id2);
-// }
-
-/**
- * this mehtod uses the ID from the body of the request object to delete the record in the table
- * @param {string} tableName
- */
-const deleteTableRow = tableName => async (req, res) => {
-  console.log(req.body.id);
-  const deletedRow = await query(
-    `delete from ${tableName} where daily_date='${req.body.id}'`
-  );
-  res.json(deletedRow);
-};
-// let data1=json(tableData1);
-// // let tableData2 = [];
-//   const getSomeMealData = (tableName) =>
-//   async (req, res) => {
-//     const index=0;
-//     for(index;index<data1.data.length;index++){
-//     const tableData2 = await query(`select * from ${tableName} WHERE date= ${tableData1.data[index]}`);
-//     res.json(tableData2);}
-
-//   }
-
-/**
- * this mehtod returns the tables schema
- * @param {string} tableName
- */
-const getTableSchema = tableName => async (req, res) => {
-  const tableSchema = await query(`describe ${tableName}`);
-  res.json(tableSchema);
-};
 /**
  * this mehtod insertes a new table record filling the ID automatically meaning no need to send the ID with the request
  * @param {string} tableName
@@ -182,45 +78,18 @@ const insertTableRow = tableName => async (req, res) => {
 };
 
 /**
- * this mehtod uses the ID from the body of the request object to update the record
- * @param {string} tableName
- */
-const updateTableRow = tableName => async (req, res) => {
-  let sqlSetStatment = "set ";
-  for (let column in req.body) {
-    if (column === "id") continue;
-    sqlSetStatment += `${column} = '${req.body[column]}',`;
-  }
-  sqlSetStatment = sqlSetStatment.slice(0, -1);
-
-  const updatedRow = await query(
-    `update ${tableName} ${sqlSetStatment} where id=${req.body.id}`
-  );
-  res.json(updatedRow);
-};
-
-/**
  * this method creates the basic API template for a given table name using the name as route of the api
  * @param {string} tableName
  */
 
 
 const createTableBasicAPI = tableName => {
-  app.post(`/date`, getDate());  
-  app.get(`/${tableName}`, getAllTableData(`${tableName}`));
-  app.get(`/${tableName}/databreakfast`, getSomeTableDataBreakfast(`${tableName}`));
   app.get(`/${tableName}/userdata`, getUserData(`${tableName}`));
   app.get(`/${tableName}/userdatacity`, getUserDataCity(`${tableName}`));
-  app.get(`/${tableName}/datalunch`, getSomeTableDataLunch(`${tableName}`));
-  app.get(`/${tableName}/datadinner`, getSomeTableDataDinner(`${tableName}`));
-  app.get(`/${tableName}/getdistinct`, getDistinctDates(`${tableName}`));
-  app.get(`/${tableName}/schema`, getTableSchema(`${tableName}`));
   app.post(`/${tableName}/insert`, insertTableRow(`${tableName}`));
-  app.delete(`/${tableName}/delete`, deleteTableRow(`${tableName}`));
-  app.patch(`/${tableName}/update`, updateTableRow(`${tableName}`));
 };
 
-createTableBasicAPI("Kitchen_menu");
+createTableBasicAPI("rca");
 createTableBasicAPI("Zolo_city");
 
 app.listen(3000, () => console.log("Listening at http://localhost:3000/"));

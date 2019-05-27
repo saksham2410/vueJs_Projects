@@ -5,8 +5,8 @@
         <v-img :src="require('../assets/zolo-logo.png')" class="my-3" contain height="50"></v-img>
       </v-flex>
       <v-card-title>
-        <v-icon large left>mdi-calendar</v-icon>
-        <!-- <span class="title font-weight-light">{{
+        <!-- <v-icon large left>mdi-calendar</v-icon>
+        <span class="title font-weight-light">{{
             Date.now() | moment("dddd, MMMM Do YYYY")
         }}</span>-->
       </v-card-title>
@@ -17,13 +17,25 @@
           <v-container grid-list-md>
             <v-layout row wrap>
               <v-flex sm12 md4>
-                <v-text-field v-model="username" label="Filled By: " outline></v-text-field>
+                <v-text-field v-model="sendData.username" label="Filled By: " outline></v-text-field>
               </v-flex>
               <v-flex sm12 md4>
-                <v-select :items="cities" reuired label="User City" outline></v-select>
+                <v-select
+                  v-model="sendData.usercity"
+                  :items="cities"
+                  reuired
+                  label="User City"
+                  outline
+                ></v-select>
               </v-flex>
               <v-flex sm12 md4>
-                <v-select :items="kitchens" required label="User Property" outline></v-select>
+                <v-select
+                  v-model="sendData.userprop"
+                  :items="kitchens"
+                  required
+                  label="User Property"
+                  outline
+                ></v-select>
               </v-flex>
             </v-layout>
           </v-container>
@@ -32,8 +44,8 @@
       <v-card-text>
         <v-data-table :headers="headers" :items="rows" class="elevation-1" hide-actions>
           <template v-slot:items="props">
-            <td>{{ props.item.id }}</td>
-            <td>{{ props.item.name }}</td>
+            <td>{{props.item.id}}</td>
+            <td>{{ props.item.type }}</td>
             <td>
               <v-checkbox v-model="props.item.checkbox"></v-checkbox>
             </td>
@@ -50,78 +62,77 @@
           </template>
         </v-data-table>
       </v-card-text>
-      <v-btn color="primary" @click="getData">GET</v-btn>
+      <v-btn color="primary" @click="getData">SUBMIT</v-btn>
     </v-layout>
   </v-container>
 </template>
 
 <script>
+import axios from "axios";
+// import moment from "moment";
+var moment = require("moment");
 export default {
   data() {
     return {
-      checkbox: ["true", "true", "true", "true", "true", "true"],
-      row: [
-        {
-          id: 1,
-          name: "Structural Issue",
-          critical: "",
-          comment: "",
-          checkbox: false
-        }
-      ],
+      sendData: {
+        username: "",
+        usercity: "",
+        userprop: "",
+        time: "",
+        type: "",
+        critical: "",
+        comment: ""
+      },
       rows: [
         {
-          id: 1,
-          name: "Structural Issue",
+          id: "1",
+          type: "Structural Issue",
           critical: "",
           comment: "",
           checkbox: false
         },
         {
-          id: 2,
-          name: "Budget Issue",
+          id: "2",
+          type: "Budget Issue",
           critical: "",
           comment: "",
           checkbox: false
         },
         {
-          id: 3,
-          name: "Location Issue",
+          id: "3",
+          type: "Location Issue",
           critical: "",
           comment: "",
           checkbox: false
         },
         {
-          id: 4,
-          name: "Property Setup Issue",
+          id: "4",
+          type: "Property Setup Issue",
           critical: "",
           comment: "",
           checkbox: false
         },
         {
-          id: 5,
-          name: "Existing PG Takeover Issue",
+          id: "5",
+          type: "Existing PG Takeover Issue",
           critical: "",
           comment: "",
           checkbox: false
         },
         {
-          id: 6,
-          name: "Other Issues",
+          id: "6",
+          type: "Other Issues",
           critical: "",
           comment: "",
           checkbox: false
         }
       ],
-      cities: ["Bangalore", "Delhi", "Kolkata"],
+      cities: [],
       criticals: ["Low", "Moderate", "High", "Very High"],
-      kitchens: ["Swiggy", "Zomato"],
+      kitchens: [],
       username: "",
       headers: [
-        {
-          text: "ID",
-          value: "ID"
-        },
+        { text: "ID", value: "S/N" },
         { text: "Issue Type", value: "Issue Type" },
         { text: "Applicability", value: "Applicability" },
         { text: "Criticality", value: "Criticality" },
@@ -130,34 +141,40 @@ export default {
     };
   },
   methods: {
-    getData() {
+    async getData() {
+      const meow = moment().format(
+        "dddd" + " " + "DD/MM/YYYY" + " " + "HH:mm:ss"
+      );
+      this.sendData.time = meow;
+      
       console.log(this.rows);
+      for (var index = 0; index < this.rows.length; index++) {
+        if (this.rows[index].checkbox === true) {
+          this.sendData.type = this.rows[index].type;
+          this.sendData.critical = this.rows[index].critical;
+          this.sendData.comment = this.rows[index].comment;
+        
+        await axios.post(
+          `http://localhost:3000/rca/insert`,
+          this.sendData
+        );}
+      }
+      console.log(this.sendData);
     },
     async getKitchenData() {
-       this.todaydate = moment().format("YYYY-MM-DD");
-       console.log(this.todaydate);
-        const kitchenData = await axios.get(
+      const kitchenData = await axios.get(
         "http://localhost:3000/Zolo_city/userdata"
       );
-      // var kitchencity = [];
-      this.kitchenNew = kitchenData;
-      // this.kitchenNewlength = this.kitchenNew.data.length;
-      for( var iter9=0;iter9<this.kitchenNew.data.length;iter9++)
-      {
-        this.kitchenName.push(this.kitchenNew.data[iter9].LOCALNAME);
+      for (var iter9 = 0; iter9 < kitchenData.data.length; iter9++) {
+        this.kitchens.push(kitchenData.data[iter9].LOCALNAME);
       }
       const CityData = await axios.get(
         "http://localhost:3000/Zolo_city/userdatacity"
       );
-      // this.cityNew = CityData.data;
-      for( var iter9=0;iter9<CityData.data.length;iter9++)
-      {
-        this.cityNew.push(CityData.data[iter9].CITY);
+      for (var iter9 = 0; iter9 < CityData.data.length; iter9++) {
+        this.cities.push(CityData.data[iter9].CITY);
       }
-      console.log('test',this.cityNew);
-      console.log(this.cityNew.length);
-      console.log(this.kitchenName);
-    },
+    }
   },
   mounted() {
     this.getKitchenData();
