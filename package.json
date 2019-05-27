@@ -9,7 +9,9 @@
   },
   "dependencies": {
     "core-js": "^2.6.5",
+    "moment": "^2.24.0",
     "vue": "^2.6.10",
+    "vue-material-design-icons": "^3.2.0",
     "vuetify": "^1.5.5"
   },
   "devDependencies": {

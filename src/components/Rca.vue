@@ -1,7 +1,6 @@
 <template>
   <v-container>
     <v-layout row wrap align-center>
-      <!-- <v-card class="mx-auto" color="secondary" dark> -->
       <v-flex xs12>
         <v-img :src="require('../assets/zolo-logo.png')" class="my-3" contain height="50"></v-img>
       </v-flex>
@@ -30,29 +29,6 @@
           </v-container>
         </v-form>
       </v-card-text>
-      <!-- </v-card> -->
-      <!-- <v-card-text align-center>
-        <table id="firstTable">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Issue Type</th>
-      <th>Applicability</th>
-      <th>Criticality</th>
-      <th>Comment</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr v-for="row in rows" :key="row">
-      <td>{{row.id}}</td>
-      <td>{{row.name}}</td>
-      <td><v-checkbox v-model="row.checkbox"></v-checkbox></td>
-      <td><v-select v-model ="row.critical" :items="criticals" reuired label="Select" ></v-select></td>
-      <td><v-text-field v-model="row.comment" label="Comment ... " ></v-text-field></td>
-    </tr>
-  </tbody>
-</table>
-      </v-card-text>-->
       <v-card-text>
         <v-data-table :headers="headers" :items="rows" class="elevation-1" hide-actions>
           <template v-slot:items="props">
