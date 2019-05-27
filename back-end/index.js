@@ -44,7 +44,7 @@ app.get("/", (req, res) => {
 
 const getUserData = tableName => async (req, res) => {
   const userData = await query(
-    `select DISTINCT CITY, LOCALNAME from ${tableName} where TYPE = "Kitchen"`
+    `select DISTINCT CITY, LOCALNAME from ${tableName} where TYPE = "Property"`
   );
   console.log(userData);
   res.json(userData);
@@ -52,7 +52,7 @@ const getUserData = tableName => async (req, res) => {
 
 const getUserDataCity = tableName => async (req, res) => {
   const userDataCity = await query(
-    `select DISTINCT CITY from ${tableName} where TYPE = "Kitchen"`
+    `select DISTINCT CITY from ${tableName} where TYPE = "Property"`
   );
   console.log(userDataCity);
   res.json(userDataCity);

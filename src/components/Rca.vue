@@ -63,6 +63,8 @@
         </v-data-table>
       </v-card-text>
       <v-btn color="primary" @click="getData">SUBMIT</v-btn>
+      {{successtext}}
+        <v-btn @click="updateState" v-if="this.successtext==='Added'">OK</v-btn>
     </v-layout>
   </v-container>
 </template>
@@ -74,6 +76,7 @@ var moment = require("moment");
 export default {
   data() {
     return {
+      successtext: '',
       sendData: {
         username: "",
         usercity: "",
@@ -141,6 +144,9 @@ export default {
     };
   },
   methods: {
+    updateState() {
+      this.successtext = "";
+    },
     async getData() {
       const meow = moment().format(
         "dddd" + " " + "DD/MM/YYYY" + " " + "HH:mm:ss"
@@ -160,6 +166,7 @@ export default {
         );}
       }
       console.log(this.sendData);
+      this.successtext = "Added";
     },
     async getKitchenData() {
       const kitchenData = await axios.get(
