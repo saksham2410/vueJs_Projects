@@ -111,6 +111,14 @@ const getUserData = tableName => async (req, res) => {
   res.json(userData);
 };
 
+const getUserData1 = tableName => async (req, res) => {
+  const userData1 = await query(
+    `select vessel_id from ${tableName} where vessel_status = "Active"`
+  );
+  console.log(userData1);
+  res.json(userData1);
+};
+
 const getUserDataCity = tableName => async (req, res) => {
   console.log("helloeoeoeooe");
   const userDataCity = await query(
@@ -213,6 +221,7 @@ const createTableBasicAPI = tableName => {
   app.post(`/date`, getDate());  
   app.get(`/${tableName}`, getAllTableData(`${tableName}`));
   app.get(`/${tableName}/userdata`, getUserData(`${tableName}`));
+  app.get(`/${tableName}/userdata1`, getUserData1(`${tableName}`));
   app.get(`/${tableName}/userdatacity`, getUserDataCity(`${tableName}`));
   app.get(`/${tableName}/getdistinct`, getDistinctDates(`${tableName}`));
   app.post(`/${tableName}/insert`, insertTableRow(`${tableName}`));
@@ -223,6 +232,7 @@ const createTableBasicAPI = tableName => {
 createTableBasicAPI("Kitchen_menu");
 createTableBasicAPI("meal_analysis");
 createTableBasicAPI("Zolo_city");
+createTableBasicAPI("vessel_data");
 
 app.listen(3000, () => console.log("Listening at http://localhost:3000/"));
 

@@ -52,8 +52,7 @@ export default {
       date: new Date().toISOString().substr(0, 10),
       dateComp: "",
       items: {
-        item_data: { item_name: {}, vessel_id: "", weight: "" },
-        form_type: "",
+        item_data: { item_name: {}, vessel_id: "", weight: "",form_type: "" },
         meal_type: "",
         property_name: "",
         kitchen_name: "",
