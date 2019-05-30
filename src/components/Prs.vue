@@ -67,7 +67,7 @@
               <v-text-field v-model="props.item.comment" label="Comment ... "></v-text-field>
             </td>
 
-            <!-- <td class="text-xs-right">{{ props.item.critical }}</td> -->
+            <!-- <td class="text-xs-right">{{ props.item.risktype }}</td> -->
             <!-- <td class="text-xs-right">{{ props.item.protein }}</td> -->
             <!-- <td class="text-xs-right">{{ props.item.iron }}</td> -->
           </template>
@@ -75,98 +75,109 @@
       </v-card-text>
       <v-btn color="primary" @click="getData">SUBMIT</v-btn>
       {{successtext}}
-        <v-btn @click="updateState" v-if="this.successtext==='Added'">OK</v-btn>
+      <v-btn @click="updateState" v-if="this.successtext==='Added'">OK</v-btn>
     </v-layout>
   </v-container>
 </template>
 
 <script>
 import axios from "axios";
+import { constants } from "crypto";
 // import moment from "moment";
 var moment = require("moment");
 export default {
   data() {
     return {
       date: new Date().toISOString().substr(0, 10),
-      dateComp: '',
+      dateComp: "",
       menu1: false,
-      successtext: '',
+      successtext: "",
       sendData: {
-        userenter:'',
+        userenter: "",
         username: "",
         usercity: "",
-        prsid:'',
+        prsid: "",
         type: "",
         risktype: "",
         comment: "",
-        sendDate:''
+        sendDate: ""
       },
+      rows1: [
+        {
+          id: "0",
+          type: [""],
+          risktype: "",
+          comment: "",
+          checkbox: false
+        }
+      ],
       rows: [
         {
           id: "1",
           type: "Provision Not Provided",
-          critical: "",
+          risktype: "",
           comment: "",
           checkbox: false
         },
         {
           id: "2",
           type: "Wrong A/C Details",
-          critical: "",
+          risktype: "",
           comment: "",
           checkbox: false
         },
         {
           id: "3",
           type: "Incorrect Cost Center",
-          critical: "",
+          risktype: "",
           comment: "",
           checkbox: false
         },
         {
           id: "4",
           type: "Calculation Mistake",
-          critical: "",
+          risktype: "",
           comment: "",
           checkbox: false
         },
         {
           id: "5",
           type: "Incorrect Information",
-          critical: "",
+          risktype: "",
           comment: "",
           checkbox: false
         },
         {
           id: "6",
           type: "Statuatory Related Mistake",
-          critical: "",
+          risktype: "",
           comment: "",
           checkbox: false
         },
         {
           id: "7",
           type: "Advance Payment not adjusted Correctly",
-          critical: "",
+          risktype: "",
           comment: "",
           checkbox: false
         },
         {
           id: "8",
           type: "Complete Information Not Provided",
-          critical: "",
+          risktype: "",
           comment: "",
           checkbox: false
         },
         {
           id: "9",
           type: "Duplicate Payment Request",
-          critical: "",
+          risktype: "",
           comment: "",
           checkbox: false
         }
       ],
       cities: [],
+      fields: [],
       username: "",
       headers: [
         { text: "S/N", value: "S/N" },
@@ -192,36 +203,41 @@ export default {
       // this.sendData.time = meow;
       console.log(this.dateComp);
       this.sendData.sendDate = this.dateComp;
-      
+
       console.log(this.rows);
       for (var index = 0; index < this.rows.length; index++) {
         if (this.rows[index].checkbox === true) {
           this.sendData.type = this.rows[index].type;
           this.sendData.risktype = this.rows[index].risktype;
           this.sendData.comment = this.rows[index].comment;
-        
-        await axios.post(
-          `http://localhost:3000/prs/insert`,
-          this.sendData
-        );
+
+          await axios.post(`http://localhost:3000/prs/insert`, this.sendData);
         }
       }
       console.log(this.sendData);
       this.successtext = "Added";
     },
-    async getKitchenData() {
-      // const kitchenData = await axios.get(
-      //   "http://localhost:3000/Zolo_city/userdata"
-      // );
-      // for (var iter9 = 0; iter9 < kitchenData.data.length; iter9++) {
-      //   this.kitchens.push(kitchenData.data[iter9].LOCALNAME);
-      // }
-      const CityData = await axios.get(
-        "http://localhost:3000/Zolo_city/userdatacity"
-      );
-      for (var iter9 = 0; iter9 < CityData.data.length; iter9++) {
-        this.cities.push(CityData.data[iter9].CITY);
-      }
+    getKitchenData() {
+      let self = this;
+      axios
+        .get("http://localhost:3000/Zolo_city/userdatacity")
+        .then(response => {
+          for (var iter9 = 0; iter9 < response.data.length; iter9++) {
+            self.cities.push(response.data[iter9].CITY);
+          }
+        });
+
+      // axios.get("http://localhost:3000/proj_type/projdata").then(res0 => {
+      //   for (var index = 0; index < res0.data.length; index++) {
+      //     self.fields.push(res0.data[index].field_name);
+      //     // console.log(typeof(self.fields[index]));
+      //     self.rows1.type.push(self.fields[index]);
+      //     self.rows1.id++;
+      //   }
+      // });
+
+      // console.log('rows',self.rows1);
+      // console.log(self.fields);
     }
   },
   computed: {

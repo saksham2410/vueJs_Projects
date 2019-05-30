@@ -50,6 +50,14 @@ const getUserData = tableName => async (req, res) => {
   res.json(userData);
 };
 
+const getProjData = tableName => async (req, res) => {
+  const projdata = await query(
+    `select field_name from ${tableName} where form_type='prs'`
+  );
+  console.log(projdata);
+  res.json(projdata);
+};
+
 const getUserDataCity = tableName => async (req, res) => {
   const userDataCity = await query(
     `select DISTINCT CITY from ${tableName} where TYPE = "Property"`
@@ -85,14 +93,16 @@ const insertTableRow = tableName => async (req, res) => {
 
 const createTableBasicAPI = tableName => {
   app.get(`/${tableName}/userdata`, getUserData(`${tableName}`));
+  app.get(`/${tableName}/projdata`, getProjData(`${tableName}`));
   app.get(`/${tableName}/userdatacity`, getUserDataCity(`${tableName}`));
   app.post(`/${tableName}/insert`, insertTableRow(`${tableName}`));
 };
 
 createTableBasicAPI("prs");
 createTableBasicAPI("Zolo_city");
-
-app.listen(3000, () => console.log("Listening at http://localhost:3000/"));
+createTableBasicAPI("proj_type");
+const PORT = process.env.PORT || 3000;
+app.listen(PORT);
 
 
 // import pandas as pd
