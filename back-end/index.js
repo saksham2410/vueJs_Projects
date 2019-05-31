@@ -37,7 +37,7 @@ const query = sqlStatement =>
 
 app.use(
   cors({
-    origin: "http://localhost:8080"
+    origin: process.env.CORS_URL
   })
 );
 // app.use(express.json());

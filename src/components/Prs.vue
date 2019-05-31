@@ -221,7 +221,7 @@ export default {
     getKitchenData() {
       let self = this;
       axios
-        .get(this.baseURl + 'Zolo_city/userdatacity',)
+        .get(this.baseURl + 'Zolo_city/userdatacity')
         .then(response => {
           for (var iter9 = 0; iter9 < response.data.length; iter9++) {
             self.cities.push(response.data[iter9].CITY);
