@@ -88,6 +88,7 @@ var moment = require("moment");
 export default {
   data() {
     return {
+      baseURl: process.env.VUE_APP_BASE_URL,
       date: new Date().toISOString().substr(0, 10),
       dateComp: "",
       menu1: false,
@@ -211,7 +212,7 @@ export default {
           this.sendData.risktype = this.rows[index].risktype;
           this.sendData.comment = this.rows[index].comment;
 
-          await axios.post(`http://localhost:3000/prs/insert`, this.sendData);
+          await axios.post(this.baseURl + 'prs/insert', this.sendData);
         }
       }
       console.log(this.sendData);
@@ -220,7 +221,7 @@ export default {
     getKitchenData() {
       let self = this;
       axios
-        .get("http://localhost:3000/Zolo_city/userdatacity")
+        .get(this.baseURl + 'Zolo_city/userdatacity',)
         .then(response => {
           for (var iter9 = 0; iter9 < response.data.length; iter9++) {
             self.cities.push(response.data[iter9].CITY);

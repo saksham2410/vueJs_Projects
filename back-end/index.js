@@ -16,11 +16,16 @@ app.use(bodyParser.json());
 // });
 
 const db = mysql.createConnection({
-  host: "localhost",
-  database: "data1",
-  user: "root",
-  password: "password"
+  host     : process.env.MYSQL_URL,
+  user     : process.env.MYSQL_USERNAME,
+  password : process.env.MYSQL_PASSWORD,
+  database : process.env.MYSQL_DATABASE
 });
+
+const staticFileMiddleware = express.static('dist');
+
+// 1st call for unredirected requests 
+app.use(staticFileMiddleware);
 
 const query = sqlStatement =>
   new Promise((resolve, reject) => {
