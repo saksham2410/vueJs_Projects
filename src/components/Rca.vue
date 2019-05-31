@@ -76,6 +76,7 @@ var moment = require("moment");
 export default {
   data() {
     return {
+      baseURl: process.env.VUE_APP_BASE_URL,
       successtext: '',
       sendData: {
         username: "",
@@ -161,7 +162,7 @@ export default {
           this.sendData.comment = this.rows[index].comment;
         
         await axios.post(
-          `http://localhost:3000/rca/insert`,
+          this.baseURl + 'rca/insert',
           this.sendData
         );}
       }
@@ -170,13 +171,13 @@ export default {
     },
     async getKitchenData() {
       const kitchenData = await axios.get(
-        "http://localhost:3000/Zolo_city/userdata"
+        this.baseURl + 'Zolo_city/userdata'
       );
       for (var iter9 = 0; iter9 < kitchenData.data.length; iter9++) {
         this.kitchens.push(kitchenData.data[iter9].LOCALNAME);
       }
       const CityData = await axios.get(
-        "http://localhost:3000/Zolo_city/userdatacity"
+        this.baseURl + 'Zolo_city/userdatacity'
       );
       for (var iter9 = 0; iter9 < CityData.data.length; iter9++) {
         this.cities.push(CityData.data[iter9].CITY);

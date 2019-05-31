@@ -16,11 +16,17 @@ app.use(bodyParser.json());
 // });
 
 const db = mysql.createConnection({
-  host: "localhost",
-  database: "data1",
-  user: "root",
-  password: "password"
+  host     : process.env.MYSQL_URL,
+  user     : process.env.MYSQL_USERNAME,
+  password : process.env.MYSQL_PASSWORD,
+  database : process.env.MYSQL_DATABASE
 });
+
+const staticFileMiddleware = express.static('dist');
+
+// 1st call for unredirected requests 
+app.use(staticFileMiddleware);
+
 
 const query = sqlStatement =>
   new Promise((resolve, reject) => {
@@ -32,7 +38,7 @@ const query = sqlStatement =>
 
 app.use(
   cors({
-    origin: "http://localhost:8080"
+    origin: process.env.CORS_URL
   })
 );
 // app.use(express.json());
@@ -91,8 +97,8 @@ const createTableBasicAPI = tableName => {
 
 createTableBasicAPI("rca");
 createTableBasicAPI("Zolo_city");
-
-app.listen(3000, () => console.log("Listening at http://localhost:3000/"));
+const PORT = process.env.PORT || 3000;
+app.listen(PORT);
 
 
 // import pandas as pd
