@@ -17,10 +17,10 @@ app.use(bodyParser.json());
 // });
 
 const db = mysql.createConnection({
-  host     : process.env.MYSQL_URL,
-  user     : process.env.MYSQL_USERNAME,
-  password : process.env.MYSQL_PASSWORD,
-  database : process.env.MYSQL_DATABASE
+  host     : 3.218.108.144,
+  user     : project_admin,
+  password : Zolo@123,
+  database : test1
 });
 
 const staticFileMiddleware = express.static('dist');
