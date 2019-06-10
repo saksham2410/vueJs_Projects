@@ -6,6 +6,8 @@ var bodyParser = require("body-parser");
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 
+
+
 // parse application/json
 app.use(bodyParser.json());
 // const db = mysql.createConnection({
