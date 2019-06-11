@@ -48,12 +48,19 @@ app.get("/", (req, res) => {
   res.send("Hello World");
 });
 
-const getUserData = tableName => async (req, res) => {
-  const userData = await query(
-    `select DISTINCT CITY, LOCALNAME from ${tableName} where TYPE = "Property"`
+const getHeader = tableName => async (req, res) => {
+  const headerData = await query(
+    `select Description, ItemId from ${tableName} where Type = "header"`
   );
-  console.log(userData);
-  res.json(userData);
+  res.json(headerData);
+};
+
+const getClause = tableName => async (req, res) => {
+  const clauseData = await query(
+    `select Description, ItemId from ${tableName} where Type = "clause"`
+  );
+  console.log(clauseData);
+  res.json(clauseData);
 };
 
 /**
@@ -81,7 +88,8 @@ const insertTableRow = tableName => async (req, res) => {
 
 
 const createTableBasicAPI = tableName => {
-  app.get(`/${tableName}/userdata`, getUserData(`${tableName}`));
+  app.get(`/${tableName}/headerdata`, getHeader(`${tableName}`));
+  app.get(`/${tableName}/clausedata`, getClause(`${tableName}`));
   app.post(`/${tableName}/insert`, insertTableRow(`${tableName}`));
 };
 
