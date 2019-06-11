@@ -4,7 +4,7 @@
       <v-card-text>
         <v-select
           v-model="header_num"
-          :items="template.headers"
+          :items="template.header"
           required
           label="Choose Header"
           outline
@@ -27,7 +27,7 @@ export default {
   data() {
     return {
       baseURL: "http://localhost:3000/",
-      template: { header: '', clauses: [] },
+      template: { header: [], clauses: [] },
       header_num: "",
       clause_num: ""
     };
@@ -38,10 +38,8 @@ export default {
       axios.get(this.baseURL + "headerdata/headerdata").then(response => {
         console.log("headers", response.data);
         response.data.forEach(function(element) {
-            console.log(self.template.length)
-            self.template.push(response.data.length)
-            console.log(self.template.length)
-          self.template.header = element.Description;
+          self.template = Object.extend({}, self.template, { header: [], clauses: [] })
+          self.template.header.push(element.Description);
         });
       });
     },
