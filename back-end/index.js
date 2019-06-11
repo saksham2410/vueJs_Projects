@@ -59,7 +59,7 @@ const getClause = tableName => async (req, res) => {
   const clauseData = await query(
     `select Description, ItemId from ${tableName} where Type = "clause"`
   );
-  console.log(clauseData);
+  // console.log(clauseData);
   res.json(clauseData);
 };
 
