@@ -19,7 +19,7 @@
           <v-container grid-list-md>
             <v-layout row wrap>
               <v-flex sm12 md12 v-for="headindex in HeaderCount" :key="headindex">
-                <v-text-field v-model="Template.item[headindex].Header" label="Enter A Header: " outline></v-text-field>
+                <v-text-field v-model="Template.item.Header" label="Enter A Header: " outline></v-text-field>
                 <v-text-field
                   v-for="index in ClauseCount"
                   :key="index"
@@ -42,6 +42,7 @@
 <script>
 import axios from "axios";
 export default {
+  name :'Home',
   data: () => ({
     datatype: "Saksham",
     processing: "False",
