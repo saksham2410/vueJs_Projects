@@ -9,7 +9,7 @@
     </v-toolbar>
 
     <v-content>
-      <Home/>
+ <router-view/>
     </v-content>
   </v-app>
 </template>

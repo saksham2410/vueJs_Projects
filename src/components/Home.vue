@@ -31,6 +31,7 @@
               </v-flex>
               <v-btn color="primary" @click="addHeader">Add Header</v-btn>
               <v-btn color="primary" @click="insertData">Create Template</v-btn>
+              <v-btn color="primary" @click="onSubmit">SUBMIT</v-btn>
             </v-layout>
           </v-container>
         </v-form>
@@ -64,6 +65,11 @@ export default {
   methods: {
     addClause() {
       this.ClauseCount++;
+    },
+    onSubmit() {
+      this.$router.push({
+                name: "DisplayData"
+              });
     },
     addHeader() {
       this.HeaderCount++;
