@@ -50,14 +50,14 @@ app.get("/", (req, res) => {
 
 const getHeader = tableName => async (req, res) => {
   const headerData = await query(
-    `select Description, ItemId from ${tableName} where Type = "header"`
+    `select describ, Item_id from ${tableName} where Type = "header"`
   );
   res.json(headerData);
 };
 
 const getClause = tableName => async (req, res) => {
   const clauseData = await query(
-    `select Description, ItemId from ${tableName} where Type = "clause"`
+    `select describ, Item_id from ${tableName} where Type = "clause"`
   );
   // console.log(clauseData);
   res.json(clauseData);
