@@ -14,11 +14,16 @@
         </div>
       </v-card-text>
       <v-card-text>
+
+          
         Header Number : {{Template.length}}
         <v-form>
           <v-container grid-list-md>
             <v-layout row wrap>
               <v-flex sm12 md12 v-for="(headindex, i) in Template" :key="i">
+                <draggable
+        :list="Template[i]"
+      >
                 <v-text-field v-model="Template[i].Header" label="Enter A Header: " outline></v-text-field>
                 <v-text-field
                   v-for="(index, k) in Template[i].clauseCount"
@@ -27,7 +32,7 @@
                   label="Enter A Clause for this header"
                   outline
                 ></v-text-field>
-                <v-btn color="primary" @click="Template[i].clauseCount++">Add Clause</v-btn>
+                <v-btn color="primary" @click="Template[i].clauseCount++">Add Clause</v-btn></draggable>
               </v-flex>
               <v-btn color="primary" @click="addHeader">Add Header</v-btn>
               <v-btn color="primary" @click="insertData">Create Template</v-btn>
@@ -35,6 +40,7 @@
             </v-layout>
           </v-container>
         </v-form>
+        
       </v-card-text>
     </v-layout>
   </v-container>
@@ -44,6 +50,9 @@
 import axios from "axios";
 export default {
   name: "Home",
+  // components: {
+  //   draggable
+  // },
   data: () => ({
     datatype: "Saksham",
     processing: "False",
