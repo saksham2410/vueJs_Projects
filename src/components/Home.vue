@@ -14,25 +14,22 @@
         </div>
       </v-card-text>
       <v-card-text>
-
-          
         Header Number : {{Template.length}}
         <v-form>
           <v-container grid-list-md>
             <v-layout row wrap>
               <v-flex sm12 md12 v-for="(headindex, i) in Template" :key="i">
-                <draggable
-        :list="Template[i]"
-      >
                 <v-text-field v-model="Template[i].Header" label="Enter A Header: " outline></v-text-field>
-                <v-text-field
-                  v-for="(index, k) in Template[i].clauseCount"
-                  :key="k"
-                  v-model="Template[i].Clause[k]"
-                  label="Enter A Clause for this header"
-                  outline
-                ></v-text-field>
-                <v-btn color="primary" @click="Template[i].clauseCount++">Add Clause</v-btn></draggable>
+                <draggable :v-model="Template[i].Clause" @start="drag=true" @end="drag=false">
+                  <v-text-field
+                    v-for="(index, k) in Template[i].clauseCount"
+                    :key="k"
+                    v-model="Template[i].Clause[k]"
+                    label="Enter A Clause for this header"
+                    outline
+                  ></v-text-field>
+                </draggable>
+                <v-btn color="primary" @click="Template[i].clauseCount++">Add Clause</v-btn>
               </v-flex>
               <v-btn color="primary" @click="addHeader">Add Header</v-btn>
               <v-btn color="primary" @click="insertData">Create Template</v-btn>
@@ -40,7 +37,6 @@
             </v-layout>
           </v-container>
         </v-form>
-        
       </v-card-text>
     </v-layout>
   </v-container>
@@ -48,13 +44,17 @@
 
 <script>
 import axios from "axios";
+import draggable from "vuedraggable";
 export default {
   name: "Home",
-  // components: {
-  //   draggable
-  // },
+  components: {
+    draggable
+  },
   data: () => ({
+    menu1: false,
+    date: "",
     datatype: "Saksham",
+    selectedDate: "",
     processing: "False",
     cities: ["bangalore", "pakistan"],
     templateID: "1",
@@ -71,9 +71,13 @@ export default {
   }),
   methods: {
     onSubmit() {
-      this.$router.push({name: "DisplayData"});
+      this.$router.push({ name: "DisplayData" });
       console.log(this.Template);
       // {templete: this.Template, }
+    },
+    setNewDate() {
+      console.log("date", this.selectedDate);
+      console.log("newDate", this.date);
     },
     addHeader() {
       this.Template.push({ Header: "", Clause: [], clauseCount: 1 });
@@ -126,6 +130,9 @@ export default {
   computed: {
     templateNo() {
       return this.templateID;
+    },
+    computedDateFormattedMomentjs() {
+      return this.date;
     }
   }
 };
