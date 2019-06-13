@@ -1,33 +1,42 @@
 <template>
   <v-container>
-      <v-layout align-start justify-start>
-          Hello world
-      </v-layout>
+    <v-layout align-start justify-start>
+      <v-flex v-for="(clause, i) in pushClause" :key="i">
+        <v-flex v-for="(subclause, x) in clause" :key="x">
+          {{subclause}}
+          <!-- <v-textarea v-model="," ></v-textarea> -->
+        </v-flex>
+      </v-flex>
+    </v-layout>
     <v-layout align-end justify-end>
-        <v-flex sm3 md4 text-xs-right>
-      <v-card-text>
-        <v-select
-          v-model="header_num"
-          :items="headers"
-          required
-          label="Choose Header"
-          @input="clauseData"
-          outline
-        ></v-select>
-        <v-select
-          v-for="i in numClause"
-          :key="i"
-          v-model="clause_num[i]"
-          @input="numClause++"
-          :items="clauses"
-          required
-          label="Choose Clauses"
-          outline
-        ></v-select>
-      </v-card-text>
-      <v-btn color="primary" @click="pushItems">Push</v-btn>
-      <!-- <v-textarea v-model="clauses"></v-textarea> -->
-      <v-textarea v-model="clause_num"></v-textarea>
+      <v-flex sm3 md4 text-xs-right>
+        <v-card-text>
+          <v-select
+            v-model="header_num"
+            :items="headers"
+            required
+            label="Choose Header"
+            @input="clauseData"
+            outline
+          ></v-select>
+          <draggable :v-model="clause_num" @start="drag=true" @end="drag=false">
+            <v-select
+              v-for="i in numClause"
+              :key="i"
+              v-model="clause_num[i]"
+              :items="clauses"
+              required
+              label="Choose Clauses"
+              outline
+            ></v-select>
+            <v-flex text-xs-left>
+              <v-btn color="primary" @click="numClause++" text-xs-left>Choose</v-btn>
+            </v-flex>
+          </draggable>
+        </v-card-text>
+        <v-btn color="primary" @click="pushItems">Push</v-btn>
+        <!-- <v-textarea v-model="clauses"></v-textarea> -->
+        <v-textarea v-model="clause_num"></v-textarea>
       </v-flex>
     </v-layout>
   </v-container>
@@ -42,15 +51,16 @@ export default {
   },
   data() {
     return {
+      meow: "",
       baseURL: "http://localhost:3000/",
       template: [{ header: "", clauses: [] }],
       headers: [],
       clauses: [],
       numClause: 1,
       header_num: "",
-      pushClause: [{ clause: [] }],
+      pushClause: [],
+      pushClauseIndex: 0,
       clause_num: [],
-      //   headNum: "1",
       clauseNum: "1"
     };
   },
@@ -62,20 +72,18 @@ export default {
           self.template[index].header = element.describ;
           self.headers.push(index + 1 + ". " + element.describ);
           self.template.push({ header: "", clauses: [] });
-          console.log(self.template);
         });
       });
     },
     pushItems() {
-      console.log("pushClauseinit", this.pushClause);
-      console.log("clauseNumSize", this.clause_num.length);
+      this.pushClause.push({ header: "", clause: [] });
       for (var index = 1; index < this.clause_num.length; index++) {
-        console.log("pushClauseinit", this.clause_num[index]);
-        this.pushClause[0].clause.push(this.clause_num[index]);
-        console.log("reachedhere");
+        this.pushClause[this.pushClauseIndex].clause.push(
+          this.clause_num[index]
+        );
       }
-      this.pushClause.push({ clause: [] });
-      console.log("pushClause", this.pushClause);
+      this.pushClause[this.pushClauseIndex].header = this.header_num;
+      this.pushClauseIndex++;
       (this.header_num = ""), (this.clause_num = []), (this.numClause = 1);
     },
     clauseData() {
