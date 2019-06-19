@@ -7,25 +7,16 @@ var bodyParser = require("body-parser");
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 
-// parse application/json
 app.use(bodyParser.json());
-// const db = mysql.createConnection({
-//   host: "34.205.83.88",
-//   database: "zolo_analytics_metabase",
-//   user: "analytics_admin",
-//   password: "DpWBOfz871Sa"
-// });
-
-const db = mysql.createConnection({
-  host     : 3.218.108.144,
-  user     : project_admin,
-  password : Zolo@123,
-  database : test1
-});
+ const db = mysql.createConnection({
+  host: "34.205.83.88",
+  database: "Analytics_Prototype",
+  user: "analytics_proto",
+  password: "analytics_123"
+ });
 
 const staticFileMiddleware = express.static('dist');
 
-// 1st call for unredirected requests 
 app.use(staticFileMiddleware);
 
 const query = sqlStatement =>
@@ -107,7 +98,7 @@ const createTableBasicAPI = tableName => {
 createTableBasicAPI("prs");
 createTableBasicAPI("Zolo_city");
 createTableBasicAPI("proj_type");
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4200;
 app.listen(PORT);
 
 

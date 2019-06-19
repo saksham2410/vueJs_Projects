@@ -88,7 +88,7 @@ var moment = require("moment");
 export default {
   data() {
     return {
-      baseURl: process.env.VUE_APP_BASE_URL,
+      baseURl: 'http://3.218.108.144:4200/',
       date: new Date().toISOString().substr(0, 10),
       dateComp: "",
       menu1: false,
@@ -227,6 +227,8 @@ export default {
             self.cities.push(response.data[iter9].CITY);
           }
         });
+	console.log('cities',self.cities);
+	console.log('url',this.baseURl+'Zolo_city/userdatacity');
 
       // axios.get("http://localhost:3000/proj_type/projdata").then(res0 => {
       //   for (var index = 0; index < res0.data.length; index++) {
